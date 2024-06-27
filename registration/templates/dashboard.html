@@ -1,0 +1,49 @@
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <title>Company</title>
+</head>
+<body style="background-size: cover;">
+    <nav class="container-fluid">
+        <ul>
+            <li><strong><a href="{{ url_for('welcome') }}">Home</a></strong></li>
+        </ul>
+        <ul>
+            <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+            <li><a href="#about-us">About</a></li>
+        </ul>
+    </nav>
+    <main class="container">
+        <div class="grid">
+            <section>
+                <hgroup>
+                    <h1 style="text-align: center;">{{ company }}</h1>
+                    <h3 style="text-align: center;">{{ domain }}</h3>
+                </hgroup>
+                <br><button  style="width: 50%; text-align: center; margin-left: 300px;" id="view-job-postings">View Current Job Postings</button>
+                <br><button   style="width: 50%; text-align: center; margin-left: 300px;"id="create_job_posting">Create_Job_Posting</button>
+                <br><button   style="width: 50%; text-align: center; margin-left: 300px;"id="view-candidates">View Eligible Candidates</button>
+            </section>
+        </div>
+    </main>
+    <script>
+    document.getElementById('view-job-postings').addEventListener('click', function() {
+    window.location.href = "{{ url_for('job_postings') }}";
+    });
+
+    document.getElementById('create_job_posting').addEventListener('click', function() {
+    window.location.href = "{{ url_for('create_job_posting') }}";
+    });
+
+    document.getElementById('view-candidates').addEventListener('click', function() {
+    window.location.href = "{{ url_for('candidates') }}";
+    });
+    </script>
+
+</body>
+</html>
+

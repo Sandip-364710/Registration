@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <title>Choice</title>
+</head>
+<body>
+    <nav class="container-fluid">
+        <ul>
+            <li><strong><a href=" {% url 'welcome' %}">Home</a></strong></li>
+        </ul>
+        <ul>
+            <li><a href="#">About</a></li>
+        </ul>
+    </nav>
+<main class="container">
+        <div class="grid">
+            <section>
+                <hgroup>
+                    <h2 style="text-align: center;">Select your role</h2>
+                    <h3></h3>
+                </hgroup>
+                <div class="buttons" style="text-align: center; margin-top: 20px;">
+                    <br><button style="width: 40%; text-align: center; margin-left: 400px;" id="jobSeekerBtn" class="primary">Job Seeker</button>
+                    <button style="width: 40%; text-align: center; margin-left: 400px;" id="recruiterButton" class="primary">Employer</button>
+                    <button style="width: 40%; text-align: center; margin-left: 400px;" id="professionalButton" class="primary">Professional</button>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script>
+        document.getElementById('jobSeekerBtn').addEventListener('click', function() {
+            window.location.href = " {% url 'login' %}";
+        });
+        document.getElementById('recruiterButton').addEventListener('click', function() {
+            window.location.href = " {% url 'recruiter_login' %}";
+        });
+        document.getElementById('professionalButton').addEventListener('click', function() {
+            window.location.href = " {% url 'registration' %}";
+        });
+    </script>
+
+</body>
+</html>
+

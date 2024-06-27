@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="container-fluid">
+        <nav>
+            <ul>
+                <li><a href="{% url 'welcome' %}">Home</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container">
+        <section>
+            <h1>Profile of {{ user_info.username }}</h1>
+            <p>Name: {{ user_info.name }}</p>
+            <p>Email: {{ user.email }}</p>
+            <p>Experience: {{ user_info.experience }} years</p>
+            <p>Designation: {{ user_info.designation }}</p>
+            <p>Skills: {{ user_info.skills }}</p>
+        </section>
+    </main>
+</body>
+</html>

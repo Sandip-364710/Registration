@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Job Postings</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 0%;
+            margin: 0%;
+        }
+        .container-fluid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 25px;
+        }
+        nav ul, nav ul li {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+            text-decoration: none;
+        }
+        .nav-right {
+            margin-left: auto;
+            text-decoration: none;
+        }
+        table {
+            border-collapse: collapse;
+            width: auto;
+            margin: 0 auto;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center; /* Center align table cells */
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .filter-input {
+            width: 30%;
+            padding: 8px;
+            box-sizing: border-box;
+            margin-right: 10px;
+        }
+        .filter-container {
+            text-align: right;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        .dataTables_filter {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="container-fluid">
+        <ul>
+            <li><strong><a style="text-decoration: none; font-size: 23px; color: hsl(195, 85%, 41%);" href="{{ url_for('welcome') }}">Home</a></strong></li>
+        </ul>
+        <ul class="nav-right">
+            <li><a style="text-decoration: none; font-size: 23px; color: hsl(195, 85%, 41%);" href="#about-us">About</a></li>
+            <li><a style="text-decoration: none; font-size: 23px; color: hsl(195, 85%, 41%);" href="{{ url_for('logout') }}">Log Out</a></li>
+        </ul>
+    </nav>
+    <main class="container" style="padding: 0;">
+        <hgroup style="text-align: center;">
+            <h1>Current Job Postings</h1>
+            <h3>Here are the current job postings from {{ company }}.</h3>
+        </hgroup><br>
+        <div class="grid">
+            <section>
+                <div class="container mt-3">
+                    <div class="filter-container">
+                        <input style="width: 30%;" type="text" id="searchInput" class="filter-input form-control mb-2" placeholder="Search...">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Select Columns
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <div id="columnCheckboxes" class="px-3">
+                                    <label><input type="checkbox" class="column-checkbox" data-column="0" checked> Job ID</label><br>
+                                    <label><input type="checkbox" class="column-checkbox" data-column="1" checked> Title</label><br>
+                                    <label><input type="checkbox" class="column-checkbox" data-column="2" checked> Experience</label><br>
+                                    <label><input type="checkbox" class="column-checkbox" data-column="3" checked> Skills</label><br>
+                                    <label><input type="checkbox" class="column-checkbox" data-column="4" checked> Description</label><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table id="jobTable" class="display">
+                    <thead>
+                        <tr>
+                            <th>Job ID</th>
+                            <th>Title</th>
+                            <th>Experience</th>
+                            <th>Skills</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for job in jobs %}
+                        <tr>
+                            <td>{{ job[0] }}</td>
+                            <td>{{ job[1] }}</td>
+                            <td>{{ job[2] }} years</td>
+                            <td>{{ job[3] }}</td>
+                            <td>{{ job[4] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var table = $('#jobTable').DataTable();
+
+            $('#searchInput').on('keyup', function() {
+                table.search(this.value).draw();
+            });
+
+            // Handle column checkboxes
+            $('#columnCheckboxes').on('change', '.column-checkbox', function() {
+                var columnIndex = $(this).attr('data-column');
+                table.column(columnIndex).visible($(this).prop('checked'));
+            });
+
+            // Check all checkboxes by default
+            $('.column-checkbox').prop('checked', true);
+        });
+    </script>
+</body>
+</html>

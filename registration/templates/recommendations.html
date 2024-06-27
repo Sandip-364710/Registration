@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Recommendations</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body{
+             padding: 0%;
+             margin: 0%;
+        }
+        .container-fluid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* Align items vertically */
+            font-size: 25px;
+        }
+        nav ul, nav ul li {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+            text-decoration: none;
+        }
+        .nav-right {
+            margin-left: auto; /* Push items to the right */
+            text-decoration: none;
+        }
+        table {
+            border-collapse: collapse;
+            width: auto; /* Adjust the width to auto */
+            margin: 0 auto; /* Center align the table */
+        }
+        th, td {
+            border: 1px solid #ddd; /* Add 1px border */
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .filter-input {
+            width: 30%;
+            padding: 8px;
+            box-sizing: border-box;
+            margin-right: 10px;
+        }
+        .filter-container {
+            text-align: right;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        .dataTables_filter {
+            display: none;
+            /* Hide the default search input provided by DataTables */
+        }
+    </style>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="container-fluid">
+        <ul>
+            <li><strong><a style="text-decoration: none; font-size: 23px; color: hsl(195, 85%, 41%);" href="{{ url_for('welcome') }}">Home</a></strong></li>
+        </ul>
+        <ul class="nav-right">
+            <li><a style="text-decoration: none; font-size: 23px; color: hsl(195, 85%, 41%);" href="#about-us">About</a></li>
+            <li><a style="text-decoration: none; font-size: 23px; color: hsl(195, 85%, 41%);" href="{{ url_for('logout') }}">Log Out</a></li>
+        </ul>
+    </nav>
+    <main class="container" style="padding: 0;">
+        <hgroup style="text-align: center;">
+            <h1>Job Recommendations</h1>
+            <h3>Here are the recommended jobs based on your job title, experience, and skills.</h3>
+        </hgroup><br>
+        <div class="grid">
+            <section>
+                {% if recommendations %}
+                <div class="container mt-3">
+                    <div class="filter-container">
+                        <input style="width: 30%;" type="text" id="searchInput" class="filter-input form-control mb-2" placeholder="Search...">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Select Columns
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <div id="columnCheckboxes" class="px-3">
+                                    <label><input type="checkbox" class="column-checkbox" value="0" checked> Company</label><br>
+                                    <label><input type="checkbox" class="column-checkbox" value="1" checked> Job Title</label><br>
+                                    <label><input type="checkbox" class="column-checkbox" value="2" checked> Salary</label><br>
+                                    <label><input type="checkbox" class="column-checkbox" value="3" checked> Experience Required</label><br>
+                                    <label><input type="checkbox" class="column-checkbox" value="4" checked> Skills Required</label><br>
+                                    <label><input type="checkbox" class="column-checkbox" value="5" checked> Industry</label><br>
+                                    <label><input type="checkbox" class="column-checkbox" value="6" checked> Company URL</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <table id="recommendations-table" class="display">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Job Title</th>
+                                <th>Salary</th>
+                                <th>Experience Required</th>
+                                <th>Skills Required</th>
+                                <th>Industry</th>
+                                <th>Company URL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for job in recommendations %}
+                                <tr>
+                                    <td>{{ job['Company'] }}</td>
+                                    <td>{{ job['Job Title'] }}</td>
+                                    <td>{{ job['Job Salary'] }}</td>
+                                    <td style="text-align: center;">{{ job['Job Experience'] }}</td>
+                                    <td>{{ job['Key Skills'] }}</td>
+                                    <td>{{ job['Industry'] }}</td>
+                                    <td>{{ job['Domain'] }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <h5>No recommendations found!</h5>
+                {% endif %}
+            </section>
+        </div>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var table = $('#recommendations-table').DataTable();
+
+            $('#searchInput').on('keyup', function() {
+                table.search(this.value).draw();
+            });
+
+            $('.column-checkbox').on('change', function() {
+                var columnIndex = parseInt($(this).val());
+                var column = table.column(columnIndex);
+                column.visible($(this).is(':checked'));
+            });
+
+            // Check all checkboxes by default
+            $('.column-checkbox').prop('checked', true);
+        });
+    </script>
+</body>
+</html>

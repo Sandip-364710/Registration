@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <title>Welcome to Placement Guide</title>
+    <style>
+        body{
+           background-size: contain;
+        }
+        </style>
+</head>
+<body>
+    <nav class="container-fluid">
+        <ul>
+            <li><strong><a href="{{ {% url 'welcome' %}">Home</a></strong></li>
+        </ul>
+        <ul>
+            <li><a href="#">About</a></li>
+        </ul>
+    </nav>
+     <main class="container">
+        <div class="grid">
+            <section>
+                <hgroup>
+                    <h1 style="padding: 0;font-size: 30px;">Welcome to Placement Guide!</h1>
+                    <h3 style="padding: 0; font-size: 20px;">Your pathway to successful placements</h3>
+                </hgroup>
+                <p style="padding: 0; font-size: 20px;">Our system provides personalized recommendations to help job seekers find the best opportunities that match their skills and aspirations, and assists recruiters in discovering talented candidates perfectly suited for their vacancies.</p>
+
+                <figure>
+                    <img style="width: 100%;" src="https://img.freepik.com/free-photo/modern-equipped-computer-lab_23-2149241213.jpg?w=740&t=st=1716986631~exp=1716987231~hmac=ab4fe632570d0186c464f1b6d05ff0156e75fbbd6368fc2b196a9ab2153e12ea" alt="Career Pathways" />
+                </figure>
+                <button style="width: 50%; text-align: center; margin-left: 300px;" id="getStartedBtn" class="primary" style="margin-bottom: 20px;">Get Started</button>
+            </section>
+        </div>
+    </main>
+    <script>
+        document.getElementById('getStartedBtn').addEventListener('click', function() {
+    window.location.href = '{% url 'choice' %}';
+});
+    </script>
+    
+</body>
+</html>
+ 
