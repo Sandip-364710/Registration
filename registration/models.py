@@ -3,9 +3,10 @@ from django.contrib.auth.models import User
 
 class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    email = models.EmailField()
     experience = models.IntegerField()
     designation = models.CharField(max_length=255)
-    skills = models.TextField()
+    skills = models.CharField(max_length=300)
 
     def __str__(self):
         return self.user.username

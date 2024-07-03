@@ -9,12 +9,12 @@ class UserRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['username', 'email', 'password1','password2']
 
 class UserInfoForm(forms.ModelForm):
     class Meta:
         model = UserInfo
-        fields = ['experience', 'designation', 'skills']
+        fields = ['experience', 'designation', 'skills','email']
 
 class BusinessRegistrationForm(forms.ModelForm):
     class Meta:

@@ -170,20 +170,20 @@
                 <div style="padding: 0%;">
                 <h2 style="padding-top: 0; margin-bottom: 0px; font-size: 20px; ">Business Registration Form</h2>
                 </div>
-                <form id="businessRegistrationForm" method="post" action="">
+                <form id="businessRegistrationForm" method="post" action="{% url 'registration' %}">
                     {% csrf_token %}
                     <input class="form-control" type="hidden" name="userType" value="business">
                     <div>
-                        <input class="form-control" type="text" id="orgName" name="orgName" placeholder="Name of Organization" required>
+                        <input class="form-control" type="text" id="org_name" name="org_name" placeholder="Name of Organization*" aria-label="org_name" required />
                     </div>
                     <div>
-                        <input class="form-control" type="text" id="name" name="name" placeholder="Name*" required>
+                        <input class="form-control" type="text" id="name" name="name" placeholder="Name*" aria-label="name" required />
                     </div>
                     <div>
-                        <input class="form-control" type="email" id="email" name="email" placeholder="Email*" required>
+                        <input class="form-control" type="email" id="email" name="email" placeholder="Email*" required />
                     </div>
                     <div>
-                        <input class="form-control" type="tel" id="phone" name="phone" placeholder="Phone*" required>
+                        <input class="form-control" type="tel" id="phone" name="phone" placeholder="Phone*" required />
                     </div>
                     <div>
                         <textarea class="form-control" id="address" name="address" rows="3" placeholder="Address"></textarea>
@@ -215,32 +215,32 @@
                 <div style="padding: 0%;">
                 <h2  style="padding-bottom: 20px; margin-bottom: 0px; font-size: 20px; margin-left: 570px; padding-right: 20px;  ">Individual Registration Form</h2>
                 </div>
-                <form id="individualRegistrationForm" method="post" action="">
+                <form id="individualRegistrationForm" method="post" action="{% url 'registration' %}">
                     {% csrf_token %}
                     <input class="form-control-individual" type="hidden" name="userType" value="individual">
                     <div>
-                        <input class="form-control-individual" type="text" id="indName" name="indName" placeholder="Name*" required>
+                        <input class="form-control-individual" type="text" id="name" name="name" placeholder="Name*" aria-label="name" required />
                     </div>
                     <div>
-                        <input class="form-control-individual" type="tel" id="indPhone" name="indPhone" placeholder="Phone*" required>
+                        <input class="form-control-individual" type="email" id="email" name="email" placeholder="Email*" required />
                     </div>
                     <div>
-                        <input class="form-control-individual" type="email" id="indEmail" name="indEmail" placeholder="Email*" required>
+                        <input class="form-control-individual" type="tel" id="phone" name="phone" placeholder="Phone*" required />
                     </div>
                     <div>
-                        <input class="form-control-individual" type="text" id="experience" name="experience" placeholder="Experience*">
+                        <input class="form-control-individual"  type="number" id="experience" name="experience" placeholder="experience" aria-label="experience" required />
                     </div>
                     <div>
-                        <input class="form-control-individual" type="text" id="skills" name="skills" placeholder="Skills*">
+                        <input class="form-control-individual" type="text" id="skills" name="skills" placeholder="skills" aria-label="skills" required />
                     </div>
                     <div>
-                        <input class="form-control-individual" type="text" id="indCountry" name="indCountry" placeholder="Country">
+                        <input class="form-control-individual" type="text" id="country" name="country" placeholder="Country" required />
                     </div>
                     <div>
-                        <input class="form-control-individual" type="text" id="cost" name="cost" placeholder="Cost (hourly/Daily/Contract)*">
+                        <input class="form-control-individual" type="text" id="cost" name="cost" placeholder="Cost (hourly/Daily/Contract)*"  required />
                     </div>
                     <div class="buttons">
-                        <button style="width: 20%; margin-top: 20px; font-size: 20px;" type="submit">Submit</button>
+                        <button style="width: 20%; margin-left: 80px; margin-right: 30px;" type="submit">Submit</button>
                     </div>
                 </form>
             </div>

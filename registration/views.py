@@ -65,7 +65,7 @@ def user_logout(request):
 def view_profile(request, username):
     user = get_object_or_404(User, username=username)
     user_info = get_object_or_404(UserInfo, user=user)
-    return render(request, 'registration/view_profile.html', {'user': user, 'user_info': user_info})
+    return render(request, 'viewprofile.html', {'user': user, 'user_info': user_info})
 @login_required
 def recommend_jobs_route(request):
     user_info = get_object_or_404(UserInfo, user=request.user)

@@ -21,34 +21,8 @@
                 <h2>Individual Registration Form</h2>
                 <form id="individualRegistrationForm" method="post" action="{{ url_for('process_individual_registration') }}">
                     {% csrf_token %}
-                    <div>
-                        <label for="indName">Name:</label>
-                        <input type="text" id="indName" name="indName" required>
-                    </div>
-                    <div>
-                        <label for="indPhone">Phone:</label>
-                        <input type="tel" id="indPhone" name="indPhone" required>
-                    </div>
-                    <div>
-                        <label for="indEmail">Email:</label>
-                        <input type="email" id="indEmail" name="indEmail" required>
-                    </div>
-                    <div>
-                        <label for="experience">Experience:</label>
-                        <input type="text" id="experience" name="experience">
-                    </div>
-                    <div>
-                        <label for="skills">Skills:</label>
-                        <input type="text" id="skills" name="skills">
-                    </div>
-                    <div>
-                        <label for="indCountry">Country:</label>
-                        <input type="text" id="indCountry" name="indCountry">
-                    </div>
-                    <div>
-                        <label for="cost">Cost (hourly/Daily/Contract):</label>
-                        <input type="text" id="cost" name="cost">
-                    </div>
+                  
+                    {{ form.as_p }}
                     <div>
                         <button type="submit">Submit</button>
                     </div>

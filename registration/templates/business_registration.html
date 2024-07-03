@@ -21,50 +21,8 @@
                 <h2>Business Registration Form</h2>
                 <form id="businessRegistrationForm" method="post" action="{{ url_for('process_business_registration') }}">
                     {% csrf_token %}
-                    <div>
-                        <label for="orgName">Name of Organization:</label>
-                        <input type="text" id="orgName" name="orgName" required>
-                    </div>
-                    <div>
-                        <label for="name">Contact Person Name:</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div>
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div>
-                        <label for="phone">Phone:</label>
-                        <input type="tel" id="phone" name="phone" required>
-                    </div>
-                    <div>
-                        <label for="address">Address:</label>
-                        <textarea id="address" name="address" rows="3"></textarea>
-                    </div>
-                    <div>
-                        <label for="country">Country:</label>
-                        <input type="text" id="country" name="country">
-                    </div>
-                    <div>
-                        <label for="state">State:</label>
-                        <input type="text" id="state" name="state">
-                    </div>
-                    <div>
-                        <label for="city">City:</label>
-                        <input type="text" id="city" name="city">
-                    </div>
-                    <div>
-                        <label for="website">Website:</label>
-                        <input type="url" id="website" name="website">
-                    </div>
-                    <div>
-                        <label for="headcount">Headcount:</label>
-                        <input type="number" id="headcount" name="headcount">
-                    </div>
-                    <div>
-                        <label for="industry">Industry:</label>
-                        <input type="text" id="industry" name="industry">
-                    </div>
+                  
+                    {{ form.as_p }}
                     <div>
                         <button type="submit">Submit</button>
                     </div>
