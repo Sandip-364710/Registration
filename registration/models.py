@@ -23,6 +23,7 @@ class BusinessRegistration(models.Model):
     website = models.CharField(max_length=255, blank=True, null=True)
     headcount = models.IntegerField()
     industry = models.CharField(max_length=255)
+    password = models.CharField(max_length=255) 
 
     def __str__(self):
         return self.org_name

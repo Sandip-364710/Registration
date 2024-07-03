@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .forms import UserRegistrationForm, UserInfoForm, BusinessRegistrationForm, IndividualRegistrationForm, JobPostingForm
 from .models import BusinessRegistration, JobPosting, Recommendation, UserInfo
+from django.contrib.auth.hashers import check_password
+# from .jobs1 import recommend_jobs
 
 def welcome(request):
     return render(request, 'welcome.html')
@@ -94,10 +96,13 @@ def recruiter_login(request):
         company_id = request.POST.get('companyid')
         company_password = request.POST.get('companypassword')
         try:
-            company = BusinessRegistration.objects.get(id=company_id, password=company_password)
-            request.session['company_id'] = company.id
-            return redirect('dashboard')
-        except BusinessRegistration.DoesNotExist:
+            company = BusinessRegistration.objects.get(id=company_id)
+            if check_password(company_password, company.password):
+                request.session['company_id'] = company.id
+                return redirect('dashboard')
+            else:
+                return render(request, 'recruiter_login.html', {'error': 'Invalid credentials'})
+        except UserInfo.DoesNotExist:
             return render(request, 'recruiter_login.html', {'error': 'Invalid credentials'})
     return render(request, 'recruiter_login.html')
 

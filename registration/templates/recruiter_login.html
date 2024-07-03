@@ -26,7 +26,7 @@
                 <form class="grid" action="{% url 'recruiter_login' %}" method="post" style="grid-template-columns: 1fr; grid-gap: 20px;">
                        {% csrf_token %}
                     <input style="width: 50%; text-align: center; margin-left: 260px;" type="number" id="companyid" name="companyid" placeholder="Company ID (5 digit number)" aria-label="Company ID" required />
-                    <input style="width: 50%; text-align: center; margin-left: 260px;" type="password" id="companypassword" name="companypassword" placeholder="Company Password" aria-label="Company Password" required />
+                    <input style="width: 50%; text-align: center; margin-left: 260px;" type="companypassword" id="companypassword" name="companypassword" placeholder="Company Password" aria-label="Company Password" required />
                     <button style="width: 20%; text-align: center; margin-left: 400px;"  type="submit">Login</button>
                 </form>
                 </section>
