@@ -18,7 +18,7 @@ admin.site.register(UserInfo, UserInfoAdmin)
 
 class BusinessRegistrationAdmin(admin.ModelAdmin):
     # List of fields to display in the admin list view
-    list_display = ('org_name', 'name', 'email', 'phone', 'country',)
+    list_display = ('org_name', 'name', 'email', 'phone', 'country','state')
 
     # Fields to filter the list view by
     list_filter = ('country', 'state', 'city', 'industry')
