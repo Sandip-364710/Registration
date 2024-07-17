@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from .forms import UserRegistrationForm, UserInfoForm, BusinessRegistrationForm, IndividualRegistrationForm, JobPostingForm
 from .models import BusinessRegistration, JobPosting, Recommendation, UserInfo
 from django.contrib.auth.hashers import check_password
+# from jobs1  import recommend_jobs
 # from .jobs1 import recommend_jobs
 
 def welcome(request):
