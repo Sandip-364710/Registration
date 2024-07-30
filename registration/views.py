@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
+
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .forms import UserRegistrationForm, UserInfoForm, BusinessRegistrationForm, IndividualRegistrationForm, JobPostingForm
-from .models import BusinessRegistration, JobPosting, Recommendation, UserInfo
+from .forms import UserRegistrationForm, UserInfoForm, BusinessRegistrationForm, IndividualRegistrationForm, JobPostingForm 
+from .models import BusinessRegistration, JobPosting, Recommendation, UserInfo,IndividualRegistration
 from django.contrib.auth.hashers import check_password
 # from jobs1  import recommend_jobs
-# from .jobs1 import recommend_jobs
+from .jobs1 import recommend_jobs
 
 def welcome(request):
     return render(request, 'welcome.html')
@@ -69,26 +70,38 @@ def view_profile(request, username):
     user = get_object_or_404(User, username=username)
     user_info = get_object_or_404(UserInfo, user=user)
     return render(request, 'viewprofile.html', {'user': user, 'user_info': user_info})
+
 @login_required
 def recommend_jobs_route(request):
-    user_info = get_object_or_404(UserInfo, user=request.user)
-    recommendations = recommend_jobs(user_info.skills, user_info.designation, user_info.experience)  # Assuming a utility function
+    skills = request.GET.get('skills', '')
+    designation = request.GET.get('designation', '')
+    experience = request.GET.get('experience', '')
 
-    for job in recommendations:
-        company_id = job.get('company id')
-        job_id = int(job.get('job id'))
-        if company_id:
-            company_info = BusinessRegistration.objects.get(id=company_id)
-            job['Company'] = company_info.org_name
-            job['Domain'] = company_info.industry
+    recommendations = []
 
-        Recommendation.objects.get_or_create(
-            user=user_info,
-            job=JobPosting.objects.get(id=job_id)
-        )
+    if skills and designation and experience:
+        user_info = get_object_or_404(UserInfo, user=request.user)
+        recommendations = recommend_jobs(skills, designation, int(experience))  # Assuming a utility function
 
-    if not recommendations:
-        recommendations = [{"message": "No recommendations found!"}]
+        for job in recommendations:
+            company_id = job.get('company id')
+            job_id = int(job.get('job id'))
+            if company_id:
+                try:
+                    company_info = BusinessRegistration.objects.get(id=company_id)
+                    job['Company'] = company_info.org_name
+                    job['Industry'] = company_info.industry
+                    job['CompanyURL'] = company_info.website_url
+                except BusinessRegistration.DoesNotExist:
+                    job['Company'] = "Unknown Company"
+                    job['Industry'] = "Unknown Industry"
+                    job['CompanyURL'] = "#"
+
+            job_posting = BusinessRegistration.objects.get(id=job_id)
+            Recommendation.objects.get_or_create(
+                user=user_info,
+                job=job_posting
+            )
 
     return render(request, 'recommendations.html', {'recommendations': recommendations, 'username': request.user.username})
 
