@@ -82,8 +82,8 @@ def recommend_jobs_route(request):
             if company_id:
                 try:
                     company_info = BusinessRegistration.objects.get(id=company_id)
-                    job['Company'] = company_info.name
-                    job['Domain'] = 'Unknown'
+                    job['Company'] = company_info.org_name
+                    job['Domain'] = company_info.industry
                 except BusinessRegistration.DoesNotExist:
                     job['Company'] = 'Unknown'
                     job['Domain'] = 'Unknown'
