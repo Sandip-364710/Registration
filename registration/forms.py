@@ -20,6 +20,7 @@ class BusinessRegistrationForm(forms.ModelForm):
     class Meta:
         model = BusinessRegistration
         fields = '__all__'
+        
 
 class IndividualRegistrationForm(forms.ModelForm):
     class Meta:
