@@ -13,7 +13,7 @@ class UserInfo(models.Model):
 
 class BusinessRegistration(models.Model):
     org_name = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255,default="software developer",blank=True)
     email = models.EmailField()
     phone = models.CharField(max_length=255)
     address = models.TextField(blank=True, null=True)
@@ -22,9 +22,9 @@ class BusinessRegistration(models.Model):
     city = models.CharField(max_length=255)
     website = models.CharField(max_length=255)
     headcount = models.IntegerField()
-    industry = models.CharField(max_length=255)
+    industry = models.CharField(max_length=255,default="IT-Software, Software Services", blank=True)
     salary = models.CharField(max_length=255, blank=True, null=True)
-    experience = models.IntegerField(blank=True, null=True)  # Allow NULL values
+    experience = models.IntegerField(blank=False,null=True)  # Allow NULL values
     skills = models.CharField(max_length=255, blank=True, null=True)
     
     def __str__(self):
