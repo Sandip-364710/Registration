@@ -99,32 +99,32 @@
                         </div>
                     </div>
                 </div>
-                    <table id="recommendations-table" class="display">
-                        <thead>
+                <table id="recommendations-table" class="display">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Job Title</th>
+                            <th>Salary</th>
+                            <th>Experience Required</th>
+                            <th>Skills Required</th>
+                            <th>Industry</th>
+                            <th>Company URL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for business in businesses %}
                             <tr>
-                                <th>Company</th>
-                                <th>Job Title</th>
-                                <th>Salary</th>
-                                <th>Experience Required</th>
-                                <th>Skills Required</th>
-                                <th>Industry</th>
-                                <th>Company URL</th>
+                                <td>{{ business.org_name }}</td>
+                                <td>{{ business.name }}</td>
+                                <td>{{ business.salary }}</td>
+                                <td style="text-align: center;">{{ business.experience }}</td>
+                                <td>{{ business.skills }}</td>
+                               <td>{{ business.industry }}</td>
+                               <td><a href="{{ business.website }}" target="_blank">{{ business.website }}</a></td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {% for job in recommendations %}
-                                <tr>
-                                    <td>{{ job.Company }}</td>
-                                    <td>{{ job.Job_Title }}</td>
-                                    <td>{{ job.Job_Salary }}</td>
-                                    <td style="text-align: center;">{{ job.Job_Experience }}</td>
-                                    <td>{{ job.Key_Skills }}</td>
-                                    <td>{{ job.Industry }}</td>
-                                    <td><a href="{{ job.Company_URL }}" target="_blank">{{ job.Company_URL }}</a></td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                        {% endfor %}
+                    </tbody>
+                </table>
                 {% else %}
                     <h5>No recommendations found!</h5>
                 {% endif %}

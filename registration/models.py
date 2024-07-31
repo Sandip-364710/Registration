@@ -23,7 +23,14 @@ class BusinessRegistration(models.Model):
     website = models.CharField(max_length=255)
     headcount = models.IntegerField()
     industry = models.CharField(max_length=255)
+    salary = models.CharField(max_length=255, blank=True, null=True)
+    experience = models.IntegerField(blank=True, null=True)  # Allow NULL values
+    skills = models.CharField(max_length=255, blank=True, null=True)
     
+    def __str__(self):
+        return self.org_name
+
+   # Add skills field
 
     def __str__(self):
         return self.org_name

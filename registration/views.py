@@ -96,7 +96,14 @@ def recommend_jobs_route(request):
             except JobPosting.DoesNotExist:
                 pass  # Skip if the job posting does not exist
 
-    return render(request, 'recommendations.html', {'recommendations': recommendations, 'username': request.user.username})
+    # Fetch all business registrations to display on the page
+    businesses = BusinessRegistration.objects.all()
+
+    return render(request, 'recommendations.html', {
+        'recommendations': recommendations,
+        'username': request.user.username,
+        'businesses': businesses
+    })
 
 def recruiter_login(request):
     if request.method == 'POST':
