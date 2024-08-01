@@ -71,18 +71,18 @@ def view_profile(request, username):
 
 
 
-@login_required
-def recommendations(request):
-    user = request.user
-    # Assuming user has a profile with a skills attribute as a comma-separated string
-    user_skills = user.profile.skills.split(", ")
+# @login_required
+# def recommendations(request):
+#     user = request.user
+#     # Assuming user has a profile with a skills attribute as a comma-separated string
+#     user_skills = user.skills.split(", ")
 
-    # Filter businesses based on user skills
-    recommendations = BusinessRegistration.objects.filter(skills__name__in=user_skills).distinct()  # Assuming 'skills' is a ManyToMany field
+#     # Filter businesses based on user skills
+#     recommendations = BusinessRegistration.objects.filter(skills__name__in=user_skills).distinct()  # Assuming 'skills' is a ManyToMany field
 
-    return render(request, 'recommendations.html', {
-        'recommendations': recommendations
-    })
+#     return render(request, 'recommendations.html', {
+#         'recommendations': recommendations
+#     })
 
 @login_required
 def recommend_jobs_route(request):
