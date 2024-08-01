@@ -7,6 +7,7 @@ from .models import BusinessRegistration, JobPosting, Recommendation, UserInfo
 from django.contrib.auth.hashers import check_password
 from .jobs1 import recommend_jobs
 
+
 def welcome(request):
     return render(request, 'welcome.html')
 
@@ -67,6 +68,21 @@ def view_profile(request, username):
     user = get_object_or_404(User, username=username)
     user_info = get_object_or_404(UserInfo, user=user)
     return render(request, 'viewprofile.html', {'user': user, 'user_info': user_info})
+
+
+
+@login_required
+def recommendations(request):
+    user = request.user
+    # Assuming user has a profile with a skills attribute as a comma-separated string
+    user_skills = user.profile.skills.split(", ")
+
+    # Filter businesses based on user skills
+    recommendations = BusinessRegistration.objects.filter(skills__name__in=user_skills).distinct()  # Assuming 'skills' is a ManyToMany field
+
+    return render(request, 'recommendations.html', {
+        'recommendations': recommendations
+    })
 
 @login_required
 def recommend_jobs_route(request):
