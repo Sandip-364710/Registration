@@ -26,7 +26,7 @@ class BusinessRegistration(models.Model):
     salary = models.CharField(max_length=255, blank=True, null=True)
     experience = models.IntegerField(blank=False,null=True)  # Allow NULL values
     skills = models.CharField(max_length=255, blank=True, null=True)
-    password = models.CharField(max_length=255) 
+    
     def __str__(self):
         return self.org_name
 
