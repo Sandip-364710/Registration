@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>User Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <style>
         .container {
             padding: 0;
@@ -60,7 +62,6 @@
             margin-top: 20px;
         }
         .btn-container .btn-primary {
-            padding: 10px 20px;
             font-size: 16px;
             transition: box-shadow 0.4s ease;
         }
@@ -80,7 +81,24 @@
             <li><a href="#about-us">About</a></li>
         </ul>
     </nav>
-
+    {% if messages %}
+    <script>
+        {% for message in messages %}
+            Toastify({
+                text: "{{ message }}",
+                 {% comment %} close: true,  {% endcomment %}
+                gravity: "top",  // Position: top or bottom
+                position: "right",  // Position: left, center, or right
+                gravity: "top",
+                style: {
+                background: "linear-gradient(to right, #FF5722, #FFC107)", /* Example gradient colors */
+            },
+                duration: 2000,   // Success color
+                stopOnFocus: true,  // Prevents dismissing on hover
+            }).showToast();
+        {% endfor %}
+    </script>
+{% endif %}
     <main class="container" style="padding: 0;">
         <div class="grid">
             <section class="profile-card">

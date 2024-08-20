@@ -6,7 +6,7 @@ from .forms import UserRegistrationForm, UserInfoForm, BusinessRegistrationForm,
 from .models import BusinessRegistration, JobPosting, Recommendation, UserInfo
 from django.contrib.auth.hashers import check_password
 from .jobs1 import recommend_jobs
-
+from django.contrib import messages
 
 def welcome(request):
     return render(request, 'welcome.html')
@@ -19,11 +19,14 @@ def registration(request):
         user_type = request.POST.get('userType')
         if user_type == 'business':
             form = BusinessRegistrationForm(request.POST)
+            success_message = "Business registration successful!"
         else:
             form = IndividualRegistrationForm(request.POST)
+            success_message = "Individual registration successful!"
         
         if form.is_valid():
             form.save()
+            messages.success(request, success_message)  # Add a success message
             return redirect('welcome')  # Redirect to the welcome page upon successful form submission
     else:
         form = BusinessRegistrationForm()  # Default to business registration form
@@ -40,6 +43,7 @@ def user_signup(request):
             user_info.user = user
             user_info.save()
             login(request, user)
+            messages.success(request, 'Successfully signed up!')
             return redirect('view_profile', username=user.username)
     else:
         form = UserRegistrationForm()
@@ -54,8 +58,10 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            messages.success(request, 'Successfully logged in!')
             return redirect('view_profile', username=user.username)
         else:
+        
             return render(request, 'login.html', {'error': 'Invalid username or password'})
     return render(request, 'login.html')
 
