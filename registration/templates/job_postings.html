@@ -40,7 +40,7 @@
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
-            text-align: center; /* Center align table cells */
+            text-align: center;
         }
         th {
             background-color: #f2f2f2;
@@ -66,11 +66,11 @@
 <body>
     <nav class="container-fluid">
         <ul>
-            <li><strong><a style="text-decoration: none; font-size: 23px; color: hsl(195, 85%, 41%);" href="{{ url_for('welcome') }}">Home</a></strong></li>
+            <li><strong><a style="text-decoration: none; font-size: 23px; color: hsl(195, 85%, 41%);" href="{% url 'welcome' %}">Home</a></strong></li>
         </ul>
         <ul class="nav-right">
             <li><a style="text-decoration: none; font-size: 23px; color: hsl(195, 85%, 41%);" href="#about-us">About</a></li>
-            <li><a style="text-decoration: none; font-size: 23px; color: hsl(195, 85%, 41%);" href="{{ url_for('logout') }}">Log Out</a></li>
+            <li><a style="text-decoration: none; font-size: 23px; color: hsl(195, 85%, 41%);" href="{% url 'logout' %}">Log Out</a></li>
         </ul>
     </nav>
     <main class="container" style="padding: 0;">
@@ -112,11 +112,11 @@
                     <tbody>
                         {% for job in jobs %}
                         <tr>
-                            <td>{{ job[0] }}</td>
-                            <td>{{ job[1] }}</td>
-                            <td>{{ job[2] }} years</td>
-                            <td>{{ job[3] }}</td>
-                            <td>{{ job[4] }}</td>
+                            <td>{{ job.0 }}</td>
+                            <td>{{ job.1 }}</td>
+                            <td>{{ job.2 }} years</td>
+                            <td>{{ job.3 }}</td>
+                            <td>{{ job.4 }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

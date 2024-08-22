@@ -2,6 +2,7 @@
 from django.contrib import admin
 from django.urls import path
 from  . import views
+from .views import  create_job_posting
 
 urlpatterns = [
     
@@ -17,5 +18,5 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('job_postings/', views.job_postings, name='job_postings'),
     path('candidates/', views.candidates, name='candidates'),
-    path('create_job_posting/', views.create_job_posting, name='create_job_posting'),
+    path('create_job_posting/', create_job_posting.as_view(), name='create_job_posting'),
 ]

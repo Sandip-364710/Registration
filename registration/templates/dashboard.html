@@ -10,10 +10,10 @@
 <body style="background-size: cover;">
     <nav class="container-fluid">
         <ul>
-            <li><strong><a href="{{ url_for('welcome') }}">Home</a></strong></li>
+            <li><strong><a href="{% url 'welcome' %}">Home</a></strong></li>
         </ul>
         <ul>
-            <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+            <li><a href="{% url 'logout' %}">Log Out</a></li>
             <li><a href="#about-us">About</a></li>
         </ul>
     </nav>
@@ -32,15 +32,15 @@
     </main>
     <script>
     document.getElementById('view-job-postings').addEventListener('click', function() {
-    window.location.href = "{{ url_for('job_postings') }}";
+    window.location.href = " {% url 'job_postings' %} ";
     });
 
     document.getElementById('create_job_posting').addEventListener('click', function() {
-    window.location.href = "{{ url_for('create_job_posting') }}";
+    window.location.href = "{% url 'create_job_posting' %}";
     });
 
     document.getElementById('view-candidates').addEventListener('click', function() {
-    window.location.href = "{{ url_for('candidates') }}";
+    window.location.href = "{{ {% url 'create_job_posting' %}";
     });
     </script>
 

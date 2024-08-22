@@ -2,58 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Recommendations</title>
-    <link href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css" rel="stylesheet">
-    <style>
-        .candidate-card {
-            position: relative;
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-            margin: 10px;
-            padding: 20px;
-        }
-        .card-ids {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            text-align: right;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidates</title>
 </head>
 <body>
-    <nav class="container-fluid">
-        <ul>
-            <li><strong><a href="{{ url_for('welcome') }}">Home</a></strong></li>
-        </ul>
-        <ul>
-            <li><a href="{{ url_for('logout') }}">Log Out</a></li>
-            <li><a href="#about-us">About</a></li>
-        </ul>
-    </nav>
-    <main class="container" style="padding: 0;">
-    <hgroup>
-        <h1>Eligible Candidates</h1>
-        <h3>Here are the candidates that match your job requirements.</h3>
-    </hgroup><br>
-        <div class="row">
+    <h1>Candidates</h1>
+    {% if error %}
+    <p>{{ error }}</p>
+    {% else %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Experience</th>
+                <th>Designation</th>
+                <th>Skills</th>
+                <th>Job ID</th>
+            </tr>
+        </thead>
+        <tbody>
             {% for candidate in candidates_info %}
-            <div class="col-md-6 mb-4">
-                <div class="candidate-card">
-                    <div class="card-ids">
-                        <p>User ID: {{ candidate[0] }}</p>
-                        <p>Job ID: {{ candidate[6] }}</p>
-                    </div>
-                    <h4 class="card-title">{{ candidate[1] }}</h4> <!-- Name -->
-                    <p class="card-text">User email: {{ candidate[2] }}</p>
-                    <p class="card-text">Job title: {{ candidate[4] }}</p>
-                    <p class="card-text">Experience: {{ candidate[3] }} years</p>
-                    <p class="card-text">Skills: {{ candidate[5] }}</p>
-                </div>
-            </div>
-            {% else %}
-            <h5>No candidates found.</h5>
+            <tr>
+                <td>{{ candidate.0 }}</td>
+                <td>{{ candidate.1 }}</td>
+                <td>{{ candidate.2 }}</td>
+                <td>{{ candidate.3 }}</td>
+                <td>{{ candidate.4 }}</td>
+                <td>{{ candidate.5 }}</td>
+                <td>{{ candidate.6 }}</td>
+            </tr>
             {% endfor %}
-        </div>
-    </main>
+        </tbody>
+    </table>
+    {% endif %}
 </body>
 </html>

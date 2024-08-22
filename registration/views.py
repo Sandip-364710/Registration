@@ -5,7 +5,10 @@ from django.contrib.auth.models import User
 from .forms import UserRegistrationForm, UserInfoForm, BusinessRegistrationForm, IndividualRegistrationForm, JobPostingForm
 from .models import BusinessRegistration, JobPosting, Recommendation, UserInfo
 from django.contrib.auth.hashers import check_password
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
 from .jobs1 import recommend_jobs
+from .forms import RecruiterLoginForm
 from django.contrib import messages
 
 def welcome(request):
@@ -127,57 +130,72 @@ def recommend_jobs_route(request):
         'businesses': businesses
     })
 
+
 def recruiter_login(request):
     if request.method == 'POST':
-        company_id = request.POST.get('companyid')
-        company_password = request.POST.get('companypassword')
-        try:
-            company = BusinessRegistration.objects.get(id=company_id)
-            if check_password(company_password, company.password):
-                request.session['company_id'] = company.id
-                return redirect('dashboard')
-            else:
-                return render(request, 'recruiter_login.html', {'error': 'Invalid credentials'})
-        except BusinessRegistration.DoesNotExist:
-            return render(request, 'recruiter_login.html', {'error': 'Invalid credentials'})
-    return render(request, 'recruiter_login.html')
-
+        form = RecruiterLoginForm(request.POST)
+        if form.is_valid():
+            company_id = form.cleaned_data['companyid']
+            company_password = form.cleaned_data['companypassword']
+            
+            try:
+                company = BusinessRegistration.objects.get(id=company_id)
+                # Use check_password to compare the plain text password with the hashed password
+                if check_password(company_password, company.password):
+                    request.session['company_id'] = company.id
+                    return redirect('dashboard')
+                else:
+                    return render(request, 'recruiter_login.html', {'form': form, 'error': 'incorrect_password'})
+            except BusinessRegistration.DoesNotExist:
+                return render(request, 'recruiter_login.html', {'form': form, 'error': 'id_not_found'})
+    else:
+        form = RecruiterLoginForm()
+    
+    return render(request, 'recruiter_login.html', {'form': form})
 @login_required
 def dashboard(request):
     company_id = request.session.get('company_id')
     if not company_id:
         return redirect('recruiter_login')
+    
     company = get_object_or_404(BusinessRegistration, id=company_id)
     return render(request, 'dashboard.html', {'company': company})
 
-@login_required
 def job_postings(request):
-    company_id = request.session.get('company_id')
-    if not company_id:
-        return redirect('recruiter_login')
-    jobs = JobPosting.objects.filter(company_id=company_id)
-    return render(request, 'job_postings.html', {'jobs': jobs})
+    jobs = JobPosting.objects.all().values_list('id', 'title', 'experience', 'skills', 'description')
+    company = "Your Company Name"  # Replace with actual company name or dynamic value
+    context = {
+        'jobs': jobs,
+        'company': company,
+    }
+    return render(request, 'job_postings.html', context)
 
 @login_required
 def candidates(request):
     company_id = request.session.get('company_id')
     if not company_id:
         return redirect('recruiter_login')
+    
     recommendations = Recommendation.objects.filter(job__company_id=company_id)
     return render(request, 'candidates.html', {'recommendations': recommendations})
 
-@login_required
-def create_job_posting(request):
-    company_id = request.session.get('company_id')
-    if not company_id:
-        return redirect('recruiter_login')
-    if request.method == 'POST':
-        form = JobPostingForm(request.POST)
-        if form.is_valid():
-            job_posting = form.save(commit=False)
-            job_posting.company_id = company_id
-            job_posting.save()
-            return redirect('job_postings')
-    else:
-        form = JobPostingForm()
-    return render(request, 'create_job_posting.html', {'form': form})
+# login_required
+# def create_job_posting(request):
+#     if request.method == 'POST':
+#         form = JobPostingForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'Job posting created successfully.')
+#             return redirect('dashboard')  # Redirect to the dashboard
+#         else:
+#             messages.error(request, 'Please correct the errors below.')
+#     else:
+#         form = JobPostingForm()
+
+#     return render(request, 'create_job_posting.html', {'form': form})
+login_required
+class create_job_posting(CreateView):
+     template_name='create_job_posting.html'
+     model=JobPosting
+     fields = ['company','title', 'experience', 'skills', 'description'] 
+     success_url=reverse_lazy('job_postings')

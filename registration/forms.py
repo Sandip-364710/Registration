@@ -30,4 +30,9 @@ class IndividualRegistrationForm(forms.ModelForm):
 class JobPostingForm(forms.ModelForm):
     class Meta:
         model = JobPosting
-        fields = '__all__'
+        fields = ['title', 'experience', 'skills', 'description'] 
+
+
+class RecruiterLoginForm(forms.Form):
+    companyid = forms.CharField(label='Company ID', max_length=50)
+    companypassword = forms.CharField(label='Password', widget=forms.PasswordInput)
