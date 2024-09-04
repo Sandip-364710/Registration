@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Expert GIG Professional</title>
     <style>
-         .container {
+        .container {
             padding: 0;
         }
         .container-fluid {
             display: flex;
             justify-content: space-between;
-            align-items: center; /* Align items vertically */
+            align-items: center;
             font-size: 25px;
         }
         nav ul, nav ul li {
@@ -23,11 +23,9 @@
         nav ul li {
             display: inline;
             margin-right: 20px;
-            text-decoration: none;
         }
         .nav-right {
-            margin-left: auto; /* Push items to the right */
-            text-decoration: none;
+            margin-left: auto;
         }
         .form-section {
             padding: 0;
@@ -60,8 +58,8 @@
             text-align: center;
         }
         .radio-group input[type="radio"] {
-            width: 20px; /* Medium size */
-            height: 20px; /* Medium size */
+            width: 20px;
+            height: 20px;
             margin-right: 10px;
             margin-top: 20px;
         }
@@ -98,32 +96,14 @@
         #individualRegistrationForm button:hover {
             background-color: hsl(195, 85%, 35%);
         }
-        .form-container {
-            perspective: 1000px;
-        }
-        .form-flip {
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-        }
-        .flipped {
-            transform: rotateY(180deg);
-        }
-        .form-front, .form-back {
-            backface-visibility: hidden;
-            position: absolute;
-            width: 100%;
-        }
-        .form-back {
-            transform: rotateY(180deg);
-        }
-        .form-section-individual{
+        .form-section-individual {
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 0;
             border: 1px solid white;
         }
-        .form-control-individual{
+        .form-control-individual {
             padding: 3px 7px !important;
             height: 30px !important;
             margin-bottom: 5px !important;
@@ -131,9 +111,8 @@
             border: 1px solid #ccc !important;
             border-radius: 5px;
             transition: border-color 0.3s ease-in-out;
-            margin-right: 20px;
-            width: 30%;
-            margin-left: 450px;
+            margin-left: 550px;
+            width: 20%;
         }
         .form-control-individual:focus {
             border-color: hsl(195, 88%, 53%);
@@ -151,14 +130,14 @@
             <li><a style="text-decoration: none; font-size: 23px; color: hsl(195, 85%, 41%);" href="{% url 'logout' %}">Log Out</a></li>
         </ul>
     </nav>
-    <main class="container" >
+    <main class="container">
         <div class="grid">
             <section>
-                <h2 style="text-align: center; padding: 0; margin-bottom: 0; margin-left: 20px;">Expert GIG Professional</h2>
+                <h2 style="text-align: center; padding: 0; margin-bottom: 0;">Expert GIG Professional</h2>
                 <div class="radio-group">
                     <input type="radio" id="businessRadio" name="userType" value="business" checked>
-                    <label style="font-size: 20px;"  for="businessRadio">Business</label>
-                    <input type="radio" id="individualRadio" name="userType" value="individual">
+                    <label style="font-size: 20px;" for="businessRadio">Business</label>
+                    <input type="radio" id="individualRadio" name="userType" value="individual" >
                     <label style="font-size: 20px;" for="individualRadio">Individual</label>
                 </div>
             </section>
@@ -166,21 +145,19 @@
 
         <!-- Combined Registration Form -->
         <div id="registrationForm" class="container" style="padding: 0;">
-            <div class="form-section" id="businessForm" style="padding: 0%;">
-                <div style="padding: 0%;">
-                <h2 style="padding-top: 0; margin-bottom: 0px; font-size: 20px; ">Business Registration Form</h2>
+            <div class="form-section" id="businessForm" style="display: none;">
+                <div style="padding: 0;">
+                    <h2 style="padding-top: 0; margin-bottom: 0; font-size: 20px;">Business Registration Form</h2>
                 </div>
                 <form id="businessRegistrationForm" method="post" action="{% url 'registration' %}">
                     {% csrf_token %}
                     <input class="form-control" type="hidden" name="userType" value="business">
+                    <!-- Business form fields -->
                     <div>
-                        <input class="form-control" type="text" id="org_name" name="org_name" placeholder="Name of Organization*" aria-label="org_name" required />
+                        <input class="form-control" type="text" id="org_name" name="org_name" placeholder="Name of Organization*" required />
                     </div>
-                    <!-- <div>
-                        <input class="form-control" type="password" id="password" name="password" placeholder="Company Password" aria-label="password" required />
-                    </div> -->
                     <div>
-                        <input class="form-control" type="text" id="name" name="name" placeholder="Name*" aria-label="name" value="Software Developer" required />
+                        <input class="form-control" type="text" id="name" name="name" placeholder="Name*" required />
                     </div>
                     <div>
                         <input class="form-control" type="email" id="email" name="email" placeholder="Email*" required />
@@ -192,49 +169,47 @@
                         <textarea class="form-control" id="address" name="address" rows="3" placeholder="Address"></textarea>
                     </div>
                     <div>
-                        <input class="form-control" type="text" id="country" name="country" placeholder="Country">
+                        <input class="form-control" type="text" id="country" name="country" placeholder="Country*" required />
                     </div>
                     <div>
-                        <input class="form-control" type="text" id="state" name="state" placeholder="State">
+                        <input class="form-control" type="text" id="state" name="state" placeholder="State*" required />
                     </div>
                     <div>
-                        <input class="form-control" type="text" id="city" name="city" placeholder="City">
+                        <input class="form-control" type="text" id="city" name="city" placeholder="City*" required />
                     </div>
                     <div>
-                        <input class="form-control" type="url" id="website" name="website" placeholder="Website">
+                        <input class="form-control" type="url" id="website" name="website" placeholder="Website*" required />
                     </div>
                     <div>
-                        <input class="form-control" type="number" id="headcount" name="headcount" placeholder="Headcount">
+                        <input class="form-control" type="number" id="headcount" name="headcount" placeholder="Headcount*" required />
                     </div>
                     <div>
-                        <input class="form-control" type="text" id="industry" name="industry" value="IT-Software, Software Services" placeholder="Industry">
+                        <input class="form-control" type="text" id="industry" name="industry" value="IT-Software, Software Services" placeholder="Industry*" required />
                     </div>
                     <div>
-                        <input class="form-control" type="number" id="salary" name="salary" placeholder="Salary">
+                        <input class="form-control" type="number" id="salary" name="salary" placeholder="Salary*" required />
                     </div>
                     <div>
-                        <input class="form-control" type="number" id="experience" name="experience" placeholder="Experience Required">
+                        <input class="form-control" type="number" id="experience" name="experience" placeholder="Experience Required*" required />
                     </div>
                     <div>
                         <textarea class="form-control" id="skills" name="skills" rows="3" placeholder="Skills Required"></textarea>
                     </div>
-                     <div>
-                        <textarea class="form-control" id="skills" name="skills" rows="3" placeholder="Skills Required"></textarea>
+                    <div>
+                        <input class="form-control" type="text" id="id" name="id" placeholder="ID*" required />
                     </div>
                     <div>
-                        <input class="form-control" type="number" id="id" name="id" placeholder="id">
-                    </div>
-                    <div>
-                        <input class="form-control" type="number" id="password" name="password" placeholder="password">
+                        <input class="form-control" type="password" id="password" name="password" placeholder="Password*" required />
                     </div>
                     <div class="buttons">
-                        <button style="width: 40%; margin-left: 200px;" type="submit">Submit</button>
+                        <button style="width: 40%; margin-left: 160px;" type="submit">Submit</button>
                     </div>
                 </form>
             </div>
-            <div class="form-section-individual" id="individualForm" style="display: none;">
-                <div style="padding: 0%;">
-                <h2  style="padding-bottom: 20px; margin-bottom: 0px; font-size: 20px; margin-left: 550px; padding-right: 20px;  ">Individual Registration Form</h2>
+
+            <div class="form-section-individual" id="individualForm" style="display: block;">
+                <div style="padding: 0;">
+                    <h2 style="padding-bottom: 20px; margin-bottom: 0; font-size: 20px; margin-left: 550px;">Individual Registration Form</h2>
                 </div>
                 <form id="individualRegistrationForm" method="post" action="{% url 'registration' %}">
                     {% csrf_token %}
@@ -249,20 +224,19 @@
                         <input class="form-control-individual" type="tel" id="phone" name="phone" placeholder="Phone*" required />
                     </div>
                     <div>
-                        <input class="form-control-individual"  type="number" id="experience" name="experience" placeholder="Experience*" aria-label="experience" required />
+                        <input class="form-control-individual" type="number" id="experience" name="experience" placeholder="Experience*" aria-label="experience" required />
                     </div>
                     <div>
-                        <input class="form-control-individual" type="text" id="skills" name="skills" placeholder="skills" aria-label="skills*" required />
+                        <input class="form-control-individual" type="text" id="skills" name="skills" placeholder="Skills*" aria-label="skills" required />
                     </div>
                     <div>
                         <input class="form-control-individual" type="text" id="country" name="country" placeholder="Country" required />
                     </div>
                     <div>
-                        <input class="form-control-individual" type="text" id="cost" name="cost" placeholder="Cost (hourly/Daily/Contract)*"  required />
+                        <input class="form-control-individual" type="text" id="cost" name="cost" placeholder="Cost (hourly/Daily/Contract)*" required />
                     </div>
-                    
                     <div class="buttons">
-                        <button style="width: 20%; margin-left: 60px; margin-right: 70px;" type="submit">Submit</button>
+                        <button style="width: 20%; margin-left: 30px;" type="submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -270,31 +244,34 @@
     </main>
 
     <script>
-        // Function to handle radio button change
-        function handleUserTypeChange() {
-            var businessForm = document.getElementById('businessForm');
-            var individualForm = document.getElementById('individualForm');
-            var businessRadio = document.getElementById('businessRadio');
-            var individualRadio = document.getElementById('individualRadio');
+        const businessRadio = document.getElementById('businessRadio');
+        const individualRadio = document.getElementById('individualRadio');
+        const businessForm = document.getElementById('businessForm');
+        const individualForm = document.getElementById('individualForm');
 
-            if (businessRadio.checked) {
+        // Event listeners for radio buttons
+        businessRadio.addEventListener('change', function () {
+            if (this.checked) {
                 businessForm.style.display = 'block';
                 individualForm.style.display = 'none';
-            } else if (individualRadio.checked) {
+            }
+        });
+
+        individualRadio.addEventListener('change', function () {
+            if (this.checked) {
                 businessForm.style.display = 'none';
                 individualForm.style.display = 'block';
             }
-        }
-
-        // Attach event listener to radio buttons
-        var userTypeRadios = document.querySelectorAll('input[name="userType"]');
-        userTypeRadios.forEach(function(radio) {
-            radio.addEventListener('change', handleUserTypeChange);
         });
 
-        // Initially show the business form and hide the individual form
-        document.getElementById('businessForm').style.display = 'block';
-        document.getElementById('individualForm').style.display = 'none';
+        // Set initial form display
+        if (individualRadio.checked) {
+            businessForm.style.display = 'none';
+            individualForm.style.display = 'block';
+        } else if (businessRadio.checked) {
+            businessForm.style.display = 'block';
+            individualForm.style.display = 'none';
+        }
     </script>
 </body>
 </html>

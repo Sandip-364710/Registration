@@ -26,7 +26,16 @@
                 <!-- Form with action pointing to the recruiter_login route and method POST -->
                 <form class="grid" action="{% url 'recruiter_login' %}" method="post" style="grid-template-columns: 1fr; grid-gap: 20px;">
                     {% csrf_token %}
-                    {{ form.as_p }}  <!-- This will render the form fields as paragraphs -->
+                    
+                    <div>
+                        
+                        <input style="width: 40%; margin-left: 300px;"  type="text" id="companyid" name="companyid" maxlength="50" placeholder="Company ID*" required>
+                    </div>
+                
+                    <div>
+                        
+                        <input style="width: 40%; margin-left: 300px;" type="password" id="companypassword" name="companypassword" placeholder="Password*" required>
+                    </div>
                     
                     <!-- Error message display if any -->
                     {% if error %}
@@ -35,6 +44,8 @@
                     
                     <button style="width: 20%; text-align: center; margin-left: 400px;" type="submit">Login</button>
                 </form>
+                
+                
             </section>
         </div>
     </main>

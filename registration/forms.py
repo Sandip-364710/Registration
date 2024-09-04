@@ -19,7 +19,24 @@ class UserInfoForm(forms.ModelForm):
 class BusinessRegistrationForm(forms.ModelForm):
     class Meta:
         model = BusinessRegistration
-        fields = '__all__'
+        fields = [
+            'org_name',
+            'name',
+            'email',
+            'phone',
+            'address',
+            'country',
+            'state',
+            'city',
+            'website',
+            'headcount',
+            'industry',
+            'salary',
+            'experience',
+            'skills',
+            'id',
+            'password'
+        ]
         
 
 class IndividualRegistrationForm(forms.ModelForm):
