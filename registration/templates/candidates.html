@@ -2,40 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Candidates</title>
+    <link href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css" rel="stylesheet">
+    <style>
+        .candidate-card {
+            position: relative;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            margin: 10px;
+            padding: 20px;
+        }
+        .card-ids {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            text-align: right;
+        }
+    </style>
 </head>
 <body>
-    <h1>Candidates</h1>
-    {% if error %}
-    <p>{{ error }}</p>
-    {% else %}
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Experience</th>
-                <th>Designation</th>
-                <th>Skills</th>
-                <th>Job ID</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for candidate in candidates_info %}
-            <tr>
-                <td>{{ candidate.0 }}</td>
-                <td>{{ candidate.1 }}</td>
-                <td>{{ candidate.2 }}</td>
-                <td>{{ candidate.3 }}</td>
-                <td>{{ candidate.4 }}</td>
-                <td>{{ candidate.5 }}</td>
-                <td>{{ candidate.6 }}</td>
-            </tr>
+    <nav class="container-fluid">
+        <ul>
+            <li><strong><a href="{% url 'welcome' %}">Home</a></strong></li>
+        </ul>
+        <ul>
+            <li><a href="{% url 'logout' %}">Log Out</a></li>
+            <li><a href="#about-us">About</a></li>
+        </ul>
+    </nav>
+    <main class="container" style="padding: 0;">
+        <hgroup>
+            <h1>Eligible Candidates</h1>
+            <h3>Here are the candidates that match your job requirements.</h3>
+          
+        </hgroup><br>
+        <div class="row">
+            {% for recommendation in recommendations %}
+            <h2 class="card-text">{{ recommendation.job.company.org_name }}</h2>
+            <div class="col-md-6 mb-4">
+                <div class="candidate-card">
+                    <div class="card-ids">
+                        <p style="font-family: blod;"><strong>User ID</strong>: <strong style="color: blue;">{{ recommendation.user.id }}</strong></p>
+                        <p style="font-family: blod;"><strong>Job ID</strong>: <strong style="color: blue;">{{ recommendation.job.id }}</strong></p>
+                    </div>
+                    <h4 class="card-title">User Name: <strong style="color: rgb(95, 95, 160);">{{ recommendation.user.user.username }} </strong></h4> <!-- Accessing username -->
+                    <p class="card-text"><strong>Email</strong>: {{ recommendation.user.email }}</p>
+                    <p class="card-text"><strong>Job Title</strong>: {{ recommendation.job.title }}</p>
+                    <p class="card-text"><strong>Experience</strong>: {{ recommendation.user.experience }} years</p>
+                    <p class="card-text"><strong>Skills</strong>: {{ recommendation.user.skills }}</p>
+                   
+                </div>
+            </div>
+            {% empty %}
+            <h5>No candidates found.</h5>
             {% endfor %}
-        </tbody>
-    </table>
-    {% endif %}
+        </div>
+    </main>
 </body>
 </html>

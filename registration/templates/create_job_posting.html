@@ -33,6 +33,16 @@
             background-color: #0d7fb7;
             border: 1px solid #0d7fb7;
         }
+        .company-name {
+            font-weight: bold;
+            font-size: 1.25rem;
+            color: #e159ab; /* Highlight color */
+            /* background: linear-gradient(90deg, rgba(255,87,34,0.1) 0%, rgba(255,193,7,0.1) 100%); */
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            border: 2px solid white ;
+        }
     </style>
 </head>
 <body>
@@ -57,30 +67,25 @@
         <form method="POST" action="{% url 'create_job_posting' %}">
            {% csrf_token %}
             <div class="mb-3">
-                <label for="company" class="form-label">Company</label>
-                {{ form.company }}
+                <label for="company" class="company-name">Company-Name:- {{ company.org_name  }}</label>
+                <!-- <div class="company-name">{{ company.name }}</div> Company Name Highlighted -->
             </div>
         
-             <div class="mb-3">
-                {% comment %} <label for="title" class="form-label">Job Title</label> {% endcomment %}
+            <div class="mb-3">
                 <input type="text" class="form-control" id="title" name="title" placeholder="Job Title" required>
             </div>
             <div class="mb-3">
-                {% comment %} <label for="experience" class="form-label">Experience</label> {% endcomment %}
                 <input type="text" class="form-control" id="experience" name="experience" placeholder="Experience" required>
             </div>
             <div class="mb-3">
-                {% comment %} <label for="skills" class="form-label">Skills</label> {% endcomment %}
                 <input type="text" class="form-control" id="skills" name="skills" placeholder="Skills" required>
             </div>
             <div class="mb-3">
-                {% comment %} <label for="description" class="form-label">Description</label> {% endcomment %}
                 <textarea class="form-control" id="description" name="description" rows="5" placeholder="Description" required></textarea>
             </div>
             <div class="text-center">
-                
-            </div> 
-            <button type="submit" class="btn btn-custom px-5 py-3">Submit Job Posting</button>
+                <button type="submit" class="btn btn-custom px-5 py-3">Submit Job Posting</button>
+            </div>
         </form>
     </div>
 

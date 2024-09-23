@@ -5,6 +5,10 @@ from  . import views
 from .views import  create_job_posting
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
+]
+
+urlpatterns = [
     
     path('', views.welcome, name='welcome'),
     path('choice/', views.choice, name='choice'),

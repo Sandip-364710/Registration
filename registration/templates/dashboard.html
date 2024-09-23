@@ -1,13 +1,66 @@
- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <title>Company</title>
+    <style>
+        body {
+            background-size: cover;
+        }
+        .alert-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .alert {
+            margin: 5px;
+            padding: 15px;
+            border-radius: 5px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .alert-success {
+            background-color: green;
+        }
+        .alert-error {
+            background-color: red;
+        }
+        .btn-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
 </head>
-<body style="background-size: cover;">
+
+<body>
+    {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <script>
+                    Toastify({
+                        text: "{{ message }}",
+                        duration: 3000,
+                        gravity: "top", // Position: top or bottom
+                        position: "right", // Position: left, center, or right
+                        style: {
+                            background: "linear-gradient(to right, #FF5722, #FFC107)"
+                        }
+                    }).showToast();
+                </script>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <nav class="container-fluid">
         <ul>
             <li><strong><a href="{% url 'welcome' %}">Home</a></strong></li>
@@ -22,28 +75,38 @@
             <section>
                 <hgroup>
                     <h1 style="text-align: center;">{{ company }}</h1>
-                    <h3 style="text-align: center;">{{ domain }}</h3>
+                    <h3 style="text-align: center;"><a href="{{ company.website }}" target="_blank">{{ company.website }}</a></h3>
+                    
                 </hgroup>
-                <br><button  style="width: 50%; text-align: center; margin-left: 300px;" id="view-job-postings">View Current Job Postings</button>
-                <br><button   style="width: 50%; text-align: center; margin-left: 300px;"id="create_job_posting">Create_Job_Posting</button>
-                <br><button   style="width: 50%; text-align: center; margin-left: 300px;"id="view-candidates">View Eligible Candidates</button>
+                <br>
+                <button style="width: 50%; text-align: center; margin-left: 300px;" id="view-job-postings">
+                    View Current Job Postings
+                </button>
+                <br>
+                <button style="width: 50%; text-align: center; margin-left: 300px;" id="create-job-posting">
+                    Create Job Posting
+                </button>
+                <br>
+                <button style="width: 50%; text-align: center; margin-left: 300px;" id="view-candidates">
+                    View Eligible Candidates
+                </button>
             </section>
         </div>
     </main>
+
     <script>
-    document.getElementById('view-job-postings').addEventListener('click', function() {
-    window.location.href = " {% url 'job_postings' %} ";
-    });
+        document.getElementById('view-job-postings').addEventListener('click', function() {
+            window.location.href = "{% url 'job_postings' %}";
+        });
 
-    document.getElementById('create_job_posting').addEventListener('click', function() {
-    window.location.href = "{% url 'create_job_posting' %}";
-    });
+        document.getElementById('create-job-posting').addEventListener('click', function() {
+            window.location.href = "{% url 'create_job_posting' %}";
+        });
 
-    document.getElementById('view-candidates').addEventListener('click', function() {
-    window.location.href = "{{ {% url 'create_job_posting' %}";
-    });
+        document.getElementById('view-candidates').addEventListener('click', function() {
+            window.location.href = "{% url 'candidates' %}";
+        });
     </script>
-
+   
 </body>
 </html>
-

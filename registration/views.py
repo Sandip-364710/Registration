@@ -10,6 +10,8 @@ from django.urls import reverse_lazy
 from .jobs1 import recommend_jobs
 from .forms import RecruiterLoginForm
 from django.contrib import messages
+from django.db.models import Q
+from .recommendation_engine import recommend_jobs
 
 def welcome(request):
     return render(request, 'welcome.html')
@@ -61,7 +63,7 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, 'Successfully logged in!')
+            messages.success(request, f'Successfully logged in  User    {username}!')
             return redirect('view_profile', username=user.username)
         else:
         
@@ -93,17 +95,24 @@ def view_profile(request, username):
 #         'recommendations': recommendations
 #     })
 
+
+
 @login_required
 def recommend_jobs_route(request):
+    # Get the logged-in user's information
     user_info = get_object_or_404(UserInfo, user=request.user)
+
+    # Get job recommendations based on user's skills, designation, and experience
     recommendations = recommend_jobs(user_info.skills, user_info.designation, user_info.experience)
-    
+
+    # If no recommendations are found, return a default message
     if not recommendations:
         recommendations = [{"message": "No recommendations found!"}]
     else:
         for job in recommendations:
             company_id = job.get('company id')
-            job_id = int(job.get('job id'))
+            job_id = int(job.get('job id', 0))  # Ensure job_id is an integer
+
             if company_id:
                 try:
                     company_info = BusinessRegistration.objects.get(id=company_id)
@@ -113,22 +122,27 @@ def recommend_jobs_route(request):
                     job['Company'] = 'Unknown'
                     job['Domain'] = 'Unknown'
 
+            # Add the recommendation to the database if it doesn't exist
             try:
-                Recommendation.objects.get_or_create(
-                    user=user_info,
-                    job=JobPosting.objects.get(id=job_id)
-                )
+                job_post = JobPosting.objects.get(id=job_id)
+                Recommendation.objects.get_or_create(user=user_info, job=job_post)
             except JobPosting.DoesNotExist:
                 pass  # Skip if the job posting does not exist
 
-    # Fetch all business registrations to display on the page
-    businesses = BusinessRegistration.objects.all()
+    # Filter business registrations based on user's skills only (ignoring experience)
+    businesses = BusinessRegistration.objects.filter(
+        Q(skills__icontains=user_info.skills)  # Only match based on skills
+    ).distinct()
 
-    return render(request, 'recommendations.html', {
+    # Pass the data to the template
+    context = {
         'recommendations': recommendations,
         'username': request.user.username,
-        'businesses': businesses
-    })
+        'businesses': businesses,
+    }
+
+    return render(request, 'recommendations.html', context)
+
 
 
 def recruiter_login(request):
@@ -140,10 +154,10 @@ def recruiter_login(request):
             
             try:
                 company = BusinessRegistration.objects.get(id=company_id)
-                # Use check_password to compare the plain text password with the hashed password
                 if check_password(company_password, company.password):
                     request.session['company_id'] = company.id
-                    return redirect('dashboard')
+                    messages.success(request, f'Successfully logged in to  {company.org_name }!')
+                    return redirect('dashboard')  # Redirect directly to dashboard after success
                 else:
                     return render(request, 'recruiter_login.html', {'form': form, 'error': 'incorrect_password'})
             except BusinessRegistration.DoesNotExist:
@@ -161,23 +175,50 @@ def dashboard(request):
     company = get_object_or_404(BusinessRegistration, id=company_id)
     return render(request, 'dashboard.html', {'company': company})
 
+@login_required
 def job_postings(request):
-    jobs = JobPosting.objects.all().values_list('id', 'title', 'experience', 'skills', 'description')
-    company = "Your Company Name"  # Replace with actual company name or dynamic value
+    # Get the company ID from the logged-in user's session
+    company_id = request.session.get('company_id')
+
+    # Retrieve the specific company based on the logged-in user's company ID
+    company = BusinessRegistration.objects.get(id=company_id)
+
+    # Retrieve job postings only for the logged-in company
+    job_data = JobPosting.objects.filter(company_id=company_id)
+
     context = {
-        'jobs': jobs,
-        'company': company,
+        'jobs': job_data,   # Pass only the job postings for the logged-in company
+        'company': company, # Pass the company details to the template
     }
     return render(request, 'job_postings.html', context)
-
 @login_required
 def candidates(request):
+    # Get the company ID from the session
     company_id = request.session.get('company_id')
     if not company_id:
         return redirect('recruiter_login')
-    
-    recommendations = Recommendation.objects.filter(job__company_id=company_id)
+
+    # Get job postings for the logged-in company
+    job_postings = JobPosting.objects.filter(company_id=company_id)
+
+    # Collect the skills from the job postings
+    job_skills = set(skill.strip() for job in job_postings for skill in job.skills.split(','))
+
+    # Get recommendations based on the skills from job postings
+    recommendations = Recommendation.objects.filter(
+        user__skills__in=job_skills,
+        job__in=job_postings
+    ).select_related('user', 'job__company').distinct()
+
     return render(request, 'candidates.html', {'recommendations': recommendations})
+
+
+
+
+
+
+
+
 
 # login_required
 # def create_job_posting(request):
@@ -195,7 +236,32 @@ def candidates(request):
 #     return render(request, 'create_job_posting.html', {'form': form})
 login_required
 class create_job_posting(CreateView):
-     template_name='create_job_posting.html'
-     model=JobPosting
-     fields = ['company','title', 'experience', 'skills', 'description'] 
-     success_url=reverse_lazy('job_postings')
+    model = JobPosting
+    form_class = JobPostingForm
+    template_name = 'create_job_posting.html'
+    success_url = reverse_lazy('job_postings')
+
+    # Override form_valid to assign the logged-in company automatically
+    def form_valid(self, form):
+        # Get the logged-in user's company from the session
+        company_id = self.request.session.get('company_id')
+        if company_id:
+            # Retrieve the company and assign it to the form instance
+            company = BusinessRegistration.objects.get(id=company_id)
+            form.instance.company = company  # Assign the company to the job posting
+            # Call the parent form_valid method
+            response = super().form_valid(form)
+            # Add a success message after the job posting is successfully created
+            messages.success(self.request, "Job posting created successfully!")
+            return response
+        else:
+            # Handle missing company in session, redirect to error page
+            messages.error(self.request, "Unable to create job posting. Company not found in session.")
+            return redirect('error')
+
+    def get_context_data(self, **kwargs):
+        # Add the company to the form context so it can be displayed in the template if needed
+        context = super().get_context_data(**kwargs)
+        company_id = self.request.session.get('company_id')
+        context['company'] = BusinessRegistration.objects.get(id=company_id)
+        return context

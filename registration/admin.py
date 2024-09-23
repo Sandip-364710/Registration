@@ -11,20 +11,20 @@ class UserInfoAdmin(admin.ModelAdmin):
     list_filter = ('user', 'skills', 'experience')
 
     # Fields to search by in the search box
-    search_fields = ('user','skills', 'experience')
+    search_fields = ('user','skills', 'experience','email')
 
 # Register the UserInfo model with the UserInfoAdmin configuration
 admin.site.register(UserInfo, UserInfoAdmin)
 
 class BusinessRegistrationAdmin(admin.ModelAdmin):
     # List of fields to display in the admin list view
-    list_display = ('org_name', 'name', 'email', 'phone', 'country','state')
+    list_display = ('org_name', 'name', 'email', 'experience', 'country','skills')
 
     # Fields to filter the list view by
     list_filter = ('country', 'state', 'city', 'industry')
 
     # Fields to search by in the search box
-    search_fields = ('org_name', 'name', 'email', 'state', 'city', )
+    search_fields = ('org_name', 'name', 'email', 'state', 'city','email' )
 
 admin.site.register(BusinessRegistration, BusinessRegistrationAdmin)
 class IndividualRegistrationAdmin(admin.ModelAdmin):
@@ -38,5 +38,16 @@ class IndividualRegistrationAdmin(admin.ModelAdmin):
     search_fields = ('name','country', 'skills', 'experience' )
 
 admin.site.register(IndividualRegistration, IndividualRegistrationAdmin )
-admin.site.register(JobPosting)
-admin.site.register(Recommendation)
+
+class Jobpostingadmin(admin.ModelAdmin):
+    list_display=('company','title','experience','skills')
+    list_filter = ('company','title', 'skills', 'experience')
+    search_fields = ('company','title', 'skills', 'experience' )
+admin.site.register(JobPosting, Jobpostingadmin)
+
+class Recommendationadmin(admin.ModelAdmin):
+    list_display=('user','job')
+    list_filter=('user','job')
+    search_fields=('user','job')
+
+admin.site.register(Recommendation, Recommendationadmin)

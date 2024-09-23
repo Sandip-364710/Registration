@@ -6,10 +6,12 @@
     <title>Job Postings</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <style>
         body {
-            padding: 0%;
-            margin: 0%;
+            padding: 0;
+            margin: 0;
         }
         .container-fluid {
             display: flex;
@@ -21,21 +23,18 @@
             list-style-type: none;
             margin: 0;
             padding: 0;
-            text-decoration: none;
         }
         nav ul li {
             display: inline;
             margin-right: 20px;
-            text-decoration: none;
         }
         .nav-right {
             margin-left: auto;
-            text-decoration: none;
         }
         table {
             border-collapse: collapse;
-            width: auto;
-            margin: 0 auto;
+            width: 100%;
+            margin: 20px auto;
         }
         th, td {
             border: 1px solid #ddd;
@@ -58,12 +57,26 @@
             align-items: center;
             justify-content: flex-end;
         }
-        .dataTables_filter {
-            display: none;
-        }
     </style>
 </head>
 <body>
+    {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <script>
+                    Toastify({
+                        text: "{{ message }}",
+                        duration: 3000,
+                        gravity: "top",
+                        position: "right",
+                        style: {
+                            background: "linear-gradient(to right, #FF5722, #FFC107)"
+                        }
+                    }).showToast();
+                </script>
+            {% endfor %}
+        </div>
+    {% endif %}
     <nav class="container-fluid">
         <ul>
             <li><strong><a style="text-decoration: none; font-size: 23px; color: hsl(195, 85%, 41%);" href="{% url 'welcome' %}">Home</a></strong></li>
@@ -76,29 +89,15 @@
     <main class="container" style="padding: 0;">
         <hgroup style="text-align: center;">
             <h1>Current Job Postings</h1>
-            <h3>Here are the current job postings from {{ company }}.</h3>
-        </hgroup><br>
+            <h3>Here are the current job postings from <a href="{{ company.website }}" target="_blank">{{ company.org_name }}</a></h3>
+        </hgroup>
         <div class="grid">
             <section>
-                <div class="container mt-3">
+                {% comment %} <div class="container mt-3">
                     <div class="filter-container">
-                        <input style="width: 30%;" type="text" id="searchInput" class="filter-input form-control mb-2" placeholder="Search...">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Select Columns
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <div id="columnCheckboxes" class="px-3">
-                                    <label><input type="checkbox" class="column-checkbox" data-column="0" checked> Job ID</label><br>
-                                    <label><input type="checkbox" class="column-checkbox" data-column="1" checked> Title</label><br>
-                                    <label><input type="checkbox" class="column-checkbox" data-column="2" checked> Experience</label><br>
-                                    <label><input type="checkbox" class="column-checkbox" data-column="3" checked> Skills</label><br>
-                                    <label><input type="checkbox" class="column-checkbox" data-column="4" checked> Description</label><br>
-                                </div>
-                            </div>
-                        </div>
+                        <input type="text" id="searchInput" class="filter-input form-control mb-2" placeholder="Search...">
                     </div>
-                </div>
+                </div> {% endcomment %}
                 <table id="jobTable" class="display">
                     <thead>
                         <tr>
@@ -107,16 +106,19 @@
                             <th>Experience</th>
                             <th>Skills</th>
                             <th>Description</th>
+                          
                         </tr>
                     </thead>
                     <tbody>
                         {% for job in jobs %}
                         <tr>
-                            <td>{{ job.0 }}</td>
-                            <td>{{ job.1 }}</td>
-                            <td>{{ job.2 }} years</td>
-                            <td>{{ job.3 }}</td>
-                            <td>{{ job.4 }}</td>
+                            <td style="width: 10%;">{{ job.id }}</td> <!-- Display Job ID -->
+                            <td>{{ job.title }}</td>
+                            <td style="width: 10%;">{{ job.experience }}</td>
+                            <td style="width: 30%;">{{ job.skills }}</td>
+                            <td>{{ job.description }}</td>
+                             <!-- Accessing the company website -->
+                            {% comment %} <td><a href="{{ job.company.website }}" target="_blank">{{ job.company.website }}</a></td> {% endcomment %}
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -131,19 +133,9 @@
     <script>
         $(document).ready(function() {
             var table = $('#jobTable').DataTable();
-
             $('#searchInput').on('keyup', function() {
                 table.search(this.value).draw();
             });
-
-            // Handle column checkboxes
-            $('#columnCheckboxes').on('change', '.column-checkbox', function() {
-                var columnIndex = $(this).attr('data-column');
-                table.column(columnIndex).visible($(this).prop('checked'));
-            });
-
-            // Check all checkboxes by default
-            $('.column-checkbox').prop('checked', true);
         });
     </script>
 </body>
