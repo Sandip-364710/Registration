@@ -38,7 +38,7 @@
         </hgroup><br>
         <div class="row">
             {% for recommendation in recommendations %}
-            <h2 class="card-text">{{ recommendation.job.company.org_name }}</h2>
+            {% comment %} <h2 class="card-text">{{ recommendation.job.company.org_name }}</h2> {% endcomment %}
             <div class="col-md-6 mb-4">
                 <div class="candidate-card">
                     <div class="card-ids">

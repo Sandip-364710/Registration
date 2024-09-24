@@ -24,7 +24,7 @@ class BusinessRegistrationAdmin(admin.ModelAdmin):
     list_filter = ('country', 'state', 'city', 'industry')
 
     # Fields to search by in the search box
-    search_fields = ('org_name', 'name', 'email', 'state', 'city','email' )
+    search_fields = ('org_name', 'name', 'email', 'state', 'city','email','skills' )
 
 admin.site.register(BusinessRegistration, BusinessRegistrationAdmin)
 class IndividualRegistrationAdmin(admin.ModelAdmin):
